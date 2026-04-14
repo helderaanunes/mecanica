@@ -17,6 +17,7 @@ import React from 'react'
 
 // Dashboard
 const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'))
+
 const Colors = React.lazy(() => import('./views/theme/colors/Colors'))
 const Typography = React.lazy(() => import('./views/theme/typography/Typography'))
 
@@ -87,6 +88,35 @@ const Widgets = React.lazy(() => import('./views/widgets/Widgets'))
 const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/dashboard', name: 'Dashboard', element: Dashboard },
+  // Clientes
+  { path: '/clientes/listar', name: 'Listar Clientes', element: React.lazy(() => import('./views/clientes/Listar')) },
+  { path: '/clientes/novo', name: 'Novo Cliente', element: React.lazy(() => import('./views/clientes/Form')) },
+
+  // Agendamentos
+  { path: '/agendamentos/listar', name: 'Listar Agendamentos', element: React.lazy(() => import('./views/agendamentos/Listar')) },
+  { path: '/agendamentos/novo', name: 'Novo Agendamento', element: React.lazy(() => import('./views/agendamentos/Form')) },
+
+  // Ordens de Serviço
+  { path: '/ordens/listar', name: 'Listar O.S.', element: React.lazy(() => import('./views/ordens/Listar')) },
+  { path: '/ordens/novo', name: 'Nova O.S.', element: React.lazy(() => import('./views/ordens/Form')) },
+
+  // Produtos
+  { path: '/produtos/listar', name: 'Listar Produtos', element: React.lazy(() => import('./views/produtos/Listar')) },
+  { path: '/produtos/novo', name: 'Novo Produto', element: React.lazy(() => import('./views/produtos/Form')) },
+
+  // Marcas e Modelos
+  { path: '/marcas/listar', name: 'Listar Marcas', element: React.lazy(() => import('./views/marcas/Listar')) },
+  { path: '/marcas/novo', name: 'Nova Marca', element: React.lazy(() => import('./views/marcas/Form')) },
+  { path: '/marcas/editar/:id', name: 'Editar Marca', element: React.lazy(() => import('./views/marcas/Form')) },
+  { path: '/modelos/listar', name: 'Listar Modelos', element: React.lazy(() => import('./views/modelos/Listar')) },
+  { path: '/modelos/novo', name: 'Novo Modelo', element: React.lazy(() => import('./views/modelos/Form')) },
+  { path: '/modelos/editar/:id', name: 'Editar Modelo', element: React.lazy(() => import('./views/modelos/Form')) },
+
+  // Usuários e Permissões
+  { path: '/usuarios/listar', name: 'Listar Usuários', element: React.lazy(() => import('./views/usuarios/Listar')) },
+  { path: '/usuarios/novo', name: 'Novo Usuário', element: React.lazy(() => import('./views/usuarios/Form')) },
+  { path: '/permissoes/listar', name: 'Permissões', element: React.lazy(() => import('./views/permissoes/Listar')) },
+
   { path: '/theme', name: 'Theme', element: Colors, exact: true },
   { path: '/theme/colors', name: 'Colors', element: Colors },
   { path: '/theme/typography', name: 'Typography', element: Typography },

@@ -15,6 +15,9 @@ import CIcon from '@coreui/icons-react'
 import {
   cilBell,
   cilCalculator,
+  cilCalendar,
+  cilCarAlt,
+  cilCart,
   cilChartPie,
   cilCursor,
   cilDescription,
@@ -23,6 +26,7 @@ import {
   cilNotes,
   cilPencil,
   cilPuzzle,
+  cilSettings,
   cilSpeedometer,
   cilStar,
   cilUser,
@@ -85,6 +89,75 @@ const _nav = [
       color: 'info',
       text: 'NEW',
     },
+  },
+  {
+    component: CNavTitle,
+    name: 'Operacional',
+  },
+  {
+    component: CNavGroup,
+    name: 'Agendamentos',
+    icon: <CIcon icon={cilCalendar} customClassName="nav-icon" />,
+    items: [
+      { component: CNavItem, name: 'Listar', to: '/agendamentos/listar' },
+      { component: CNavItem, name: 'Adicionar', to: '/agendamentos/novo' },
+    ],
+  },
+  {
+    component: CNavGroup,
+    name: 'Ordens de Serviço',
+    icon: <CIcon icon={cilDescription} customClassName="nav-icon" />,
+    items: [
+      { component: CNavItem, name: 'Listar', to: '/ordens/listar' },
+      { component: CNavItem, name: 'Adicionar', to: '/ordens/novo' },
+    ],
+  },
+  {
+    component: CNavTitle,
+    name: 'Cadastros Base',
+  },
+  {
+    component: CNavGroup,
+    name: 'Clientes',
+    icon: <CIcon icon={cilUser} customClassName="nav-icon" />,
+    items: [
+      { component: CNavItem, name: 'Listar', to: '/clientes/listar' },
+      { component: CNavItem, name: 'Adicionar', to: '/clientes/novo' },
+    ],
+  },
+  {
+    component: CNavGroup,
+    name: 'Produtos',
+    icon: <CIcon icon={cilCart} customClassName="nav-icon" />,
+    items: [
+      { component: CNavItem, name: 'Listar', to: '/produtos/listar' },
+      { component: CNavItem, name: 'Adicionar', to: '/produtos/novo' },
+    ],
+  },
+  {
+    component: CNavGroup,
+    name: 'Marcas e Modelos',
+    icon: <CIcon icon={cilCarAlt} customClassName="nav-icon" />,
+    items: [
+      { component: CNavItem, name: 'Listar Marcas', to: '/marcas/listar' },
+      { component: CNavItem, name: 'Nova Marca', to: '/marcas/novo' },
+      { component: CNavItem, name: 'Listar Modelos', to: '/modelos/listar' },
+      { component: CNavItem, name: 'Novo Modelo', to: '/modelos/novo' },
+    ],
+  },
+  {
+    component: CNavTitle,
+    name: 'Sistema',
+  },
+  {
+    component: CNavGroup,
+    name: 'Usuários',
+    icon: <CIcon icon={cilSettings} customClassName="nav-icon" />,
+    items: [
+      { component: CNavItem, name: 'Listar', to: '/usuarios/listar' },
+      { component: CNavItem, name: 'Adicionar', to: '/usuarios/novo' },
+      { component: CNavItem, name: 'Permissões', to: '/permissoes/listar' },
+    ],
   },
   {
     component: CNavTitle,
