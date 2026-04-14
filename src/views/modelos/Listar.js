@@ -15,7 +15,6 @@ const ListarModelos = () => {
   const [modelos, setModelos] = useState([])
   const [loading, setLoading] = useState(true)
   
-  // Estados para exclusão
   const [modalExcluir, setModalExcluir] = useState(false)
   const [modeloParaExcluir, setModeloParaExcluir] = useState(null)
 

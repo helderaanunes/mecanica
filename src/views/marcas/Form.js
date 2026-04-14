@@ -31,7 +31,6 @@ const MarcaForm = () => {
   const [modalError, setModalError] = useState(false)
   const [errorMessage, setErrorMessage] = useState('')
 
-  // 2. FALTA: Buscar dados reais para edição
   useEffect(() => {
     if (isEdit) {
       axios.get(`http://localhost:8080/api/marcas/${id}`)
@@ -59,16 +58,13 @@ const MarcaForm = () => {
 
     try {
       if (isEdit) {
-        // Chamada para o seu @PutMapping("/{id}") no Java
         await axios.put(`http://localhost:8080/api/marcas/${id}`, payload)
       } else {
-        // Chamada para o seu @PostMapping no Java
         await axios.post('http://localhost:8080/api/marcas', payload)
       }
       
       setModalSuccess(true)
     } catch (error) {
-      // 3. MELHORIA: Capturar mensagem vinda do Spring (se houver)
       const msg = error.response?.data?.message || 'Erro ao conectar com o servidor.'
       setErrorMessage(msg)
       setModalError(true)
@@ -123,7 +119,7 @@ const MarcaForm = () => {
         visible={modalSuccess}
         onClose={() => {
           setModalSuccess(false)
-          navigate('/marcas/listar') // Redireciona após sucesso
+          navigate('/marcas/listar')
         }}
       >
         <CModalHeader className="bg-success text-white">

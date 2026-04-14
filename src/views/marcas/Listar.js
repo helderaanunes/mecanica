@@ -29,11 +29,10 @@ const ListarMarcas = () => {
   const [marcas, setMarcas] = useState([])
   const [loading, setLoading] = useState(true)
   
-  // Estados para exclusão
+
   const [modalExcluir, setModalExcluir] = useState(false)
   const [marcaParaExcluir, setMarcaParaExcluir] = useState(null)
 
-  // 1. Carregar marcas ao iniciar a tela
   const carregarMarcas = async () => {
     try {
       setLoading(true)
@@ -50,7 +49,7 @@ const ListarMarcas = () => {
     carregarMarcas()
   }, [])
 
-  // 2. Função para confirmar exclusão
+
   const confirmarExclusao = (marca) => {
     setMarcaParaExcluir(marca)
     setModalExcluir(true)
@@ -60,7 +59,7 @@ const ListarMarcas = () => {
     try {
       await axios.delete(`http://localhost:8080/api/marcas/${marcaParaExcluir.id}`)
       setModalExcluir(false)
-      carregarMarcas() // Atualiza a lista após deletar
+      carregarMarcas()
     } catch (error) {
       alert('Erro ao excluir marca. Verifique se ela está vinculada a algum veículo.')
     }
