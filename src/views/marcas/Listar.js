@@ -22,13 +22,13 @@ import {
   CModalFooter,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
-import { cilPencil, cilTrash, cilPlus, cilWarning } from '@coreui/icons'
+import { cilPencil, cilTrash, cilPlus, cilWarning, cilBan } from '@coreui/icons'
 
 const ListarMarcas = () => {
   const navigate = useNavigate()
   const [marcas, setMarcas] = useState([])
   const [loading, setLoading] = useState(true)
-  
+
 
   const [modalExcluir, setModalExcluir] = useState(false)
   const [marcaParaExcluir, setMarcaParaExcluir] = useState(null)
@@ -71,9 +71,9 @@ const ListarMarcas = () => {
         <CCard className="mb-4 shadow-sm">
           <CCardHeader className="bg-dark text-white d-flex justify-content-between align-items-center">
             <strong>Lista de Marcas</strong>
-            <CButton 
+            <CButton
                 color="secondary"
-                className="text-white shadow-sm d-flex align-items-center" 
+                className="text-white shadow-sm d-flex align-items-center"
                 onClick={() => navigate('/marcas/novo')}
                 >
                 <CIcon icon={cilPlus} className="me-2" size="lg" />
@@ -105,20 +105,20 @@ const ListarMarcas = () => {
                       </CTableDataCell>
                       <CTableDataCell className="text-center">
                         {/* Botão Editar: Navega para o formulário passando o ID */}
-                        <CButton 
-                          color="info" 
-                          variant="outline" 
-                          size="sm" 
+                        <CButton
+                          color="info"
+                          variant="outline"
+                          size="sm"
                           className="me-2"
                           onClick={() => navigate(`/marcas/editar/${marca.id}`)}
                         >
                           <CIcon icon={cilPencil} />
                         </CButton>
-                        
+
                         {/* Botão Excluir */}
-                        <CButton 
-                          color="danger" 
-                          variant="outline" 
+                        <CButton
+                          color="danger"
+                          variant="outline"
                           size="sm"
                           onClick={() => confirmarExclusao(marca)}
                         >
