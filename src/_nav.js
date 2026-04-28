@@ -105,6 +105,15 @@ const _nav = [
   },
   {
     component: CNavGroup,
+    name: 'Serviços',
+    icon: <CIcon icon={cilSettings} customClassName="nav-icon" />,
+    items: [
+      { component: CNavItem, name: 'Listar', to: '/servicos/listar' },
+      { component: CNavItem, name: 'Adicionar', to: '/servicos/novo' },
+    ],
+  },
+  {
+    component: CNavGroup,
     name: 'Ordens de Serviço',
     icon: <CIcon icon={cilDescription} customClassName="nav-icon" />,
     items: [
