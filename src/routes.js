@@ -96,6 +96,11 @@ const routes = [
   { path: '/agendamentos/listar', name: 'Listar Agendamentos', element: React.lazy(() => import('./views/agendamentos/Listar')) },
   { path: '/agendamentos/novo', name: 'Novo Agendamento', element: React.lazy(() => import('./views/agendamentos/Form')) },
 
+  // Serviços
+  { path: '/servicos/listar', name: 'Listar Serviços', element: React.lazy(() => import('./views/servicos/Listar')) },
+  { path: '/servicos/novo', name: 'Novo Serviço', element: React.lazy(() => import('./views/servicos/Form')) },
+  { path: '/servicos/editar/:id', name: 'Editar Serviço', element: React.lazy(() => import('./views/servicos/Form')) },
+
   // Ordens de Serviço
   { path: '/ordens/listar', name: 'Listar O.S.', element: React.lazy(() => import('./views/ordens/Listar')) },
   { path: '/ordens/novo', name: 'Nova O.S.', element: React.lazy(() => import('./views/ordens/Form')) },
