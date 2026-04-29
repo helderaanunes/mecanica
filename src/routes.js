@@ -108,6 +108,7 @@ const routes = [
   // Produtos
   { path: '/produtos/listar', name: 'Listar Produtos', element: React.lazy(() => import('./views/produtos/Listar')) },
   { path: '/produtos/novo', name: 'Novo Produto', element: React.lazy(() => import('./views/produtos/Form')) },
+  { path: '/produtos/:id', name: 'Editar Produto', element: React.lazy(() => import('./views/produtos/Form')) },
 
   // Marcas e Modelos
   { path: '/marcas/listar', name: 'Listar Marcas', element: React.lazy(() => import('./views/marcas/Listar')) },
