@@ -122,6 +122,8 @@ const routes = [
   { path: '/usuarios/listar', name: 'Listar Usuários', element: React.lazy(() => import('./views/usuarios/Listar')) },
   { path: '/usuarios/novo', name: 'Novo Usuário', element: React.lazy(() => import('./views/usuarios/Form')) },
   { path: '/permissoes/listar', name: 'Permissões', element: React.lazy(() => import('./views/permissoes/Listar')) },
+  { path: '/permissoes/novo', name: 'Permissões', element: React.lazy(() => import('./views/permissoes/Form')) },
+  { path: '/permissoes/editar/:id', name: 'Editar permissoes', element: React.lazy(() => import('./views/permissoes/Form')) },
 
   { path: '/theme', name: 'Theme', element: Colors, exact: true },
   { path: '/theme/colors', name: 'Colors', element: Colors },
