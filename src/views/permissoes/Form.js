@@ -95,7 +95,7 @@ const PermissaoForm = () => {
                   id="descricao"
                   placeholder="Ex: ADMIN, USUARIO, VISUALIZAR_RELATORIO..."
                   value={descricao}
-                  onChange={(e) => setDescricao(e.target.value)}
+                  onChange={(e) => setDescricao(e.target.value.trimStart())}
                   required
                   feedbackInvalid="Por favor, insira a descrição da permissão."
                 />
