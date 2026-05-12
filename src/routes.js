@@ -116,7 +116,21 @@ const routes = [
   { path: '/usuarios/listar', name: 'Listar Usuários', element: React.lazy(() => import('./views/usuarios/Listar')) },
   { path: '/usuarios/novo', name: 'Novo Usuário', element: React.lazy(() => import('./views/usuarios/Form')) },
   { path: '/permissoes/listar', name: 'Permissões', element: React.lazy(() => import('./views/permissoes/Listar')) },
-
+  {
+    path: '/permissoes/listar',
+    name: 'Lista de Permissões',
+    element: <PermissaoList />,
+  },
+  {
+    path: '/permissoes/adicionar',
+    name: 'Adicionar Permissão',
+    element: <PermissaoForm />,
+  },
+  {
+    path: '/permissoes/editar/:id',
+    name: 'Editar Permissão',
+    element: <PermissaoForm />,
+  },
   { path: '/theme', name: 'Theme', element: Colors, exact: true },
   { path: '/theme/colors', name: 'Colors', element: Colors },
   { path: '/theme/typography', name: 'Typography', element: Typography },
