@@ -28,7 +28,7 @@ const ServicoForm = () => {
   const [descricao, setDescricao] = useState('')
   const [valor, setValor] = useState('')
   const [duracao, setDuracao] = useState('')
-  
+
   const [validated, setValidated] = useState(false)
   const [modalSuccess, setModalSuccess] = useState(false)
   const [modalError, setModalError] = useState(false)
@@ -52,17 +52,17 @@ const ServicoForm = () => {
   const handleSubmit = async (event) => {
     const form = event.currentTarget
     event.preventDefault()
-    
+
     if (form.checkValidity() === false) {
       event.stopPropagation()
       setValidated(true)
       return
     }
 
-    const payload = { 
-      descricao, 
-      valor: parseFloat(valor), 
-      duracao: parseInt(duracao, 10) 
+    const payload = {
+      descricao,
+      valor: parseFloat(valor),
+      duracao: parseInt(duracao, 10)
     }
 
     try {
@@ -71,7 +71,7 @@ const ServicoForm = () => {
       } else {
         await axios.post('http://localhost:8080/api/servicos', payload)
       }
-      
+
       setModalSuccess(true)
     } catch (error) {
       const msg = error.response?.data?.message || 'Erro ao conectar com o servidor.'

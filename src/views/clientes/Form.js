@@ -39,6 +39,12 @@ const ClienteForm = () => {
     cpfCnpj: ''
   })
   
+  const [cliente, setCliente] = useState({
+    nome: '',
+    celular: '',
+    email: ''
+  })
+
   const [validated, setValidated] = useState(false)
   const [modalSuccess, setModalSuccess] = useState(false)
   const [modalError, setModalError] = useState(false)
