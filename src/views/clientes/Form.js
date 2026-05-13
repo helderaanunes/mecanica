@@ -38,11 +38,19 @@ const ClienteForm = () => {
     cep: '',
     cpfCnpj: ''
   })
-  
+
   const [cliente, setCliente] = useState({
     nome: '',
     celular: '',
-    email: ''
+    email: '',
+    logradouro: '',
+    numero: '',
+    complemento: '',
+    bairro: '',
+    cidade: '',
+    uf: '',
+    cep: '',
+    cpfCnpj: ''
   })
 
   const [validated, setValidated] = useState(false)
@@ -53,11 +61,13 @@ const ClienteForm = () => {
   useEffect(() => {
     if (isEdit) {
       axios.get(`http://localhost:8080/api/clientes/${id}`)
+
         .then(response => {
           setFormData(response.data)
         })
         .catch(error => {
           setErrorMessage('Erro ao carregar os dados do cliente.')
+
           setModalError(true)
         })
     }
@@ -71,7 +81,7 @@ const ClienteForm = () => {
   const handleSubmit = async (event) => {
     const form = event.currentTarget
     event.preventDefault()
-    
+
     if (form.checkValidity() === false) {
       event.stopPropagation()
       setValidated(true)
@@ -84,7 +94,7 @@ const ClienteForm = () => {
       } else {
         await axios.post('http://localhost:8080/api/clientes', formData)
       }
-      
+
       setModalSuccess(true)
     } catch (error) {
       const msg = error.response?.data?.message || 'Erro ao conectar com o servidor.'
@@ -100,6 +110,7 @@ const ClienteForm = () => {
           <CCardHeader className="bg-dark text-white d-flex justify-content-between align-items-center">
             <strong>{isEdit ? 'Editar Cliente' : 'Cadastrar Novo Cliente'}</strong>
           </CCardHeader>
+
           <CCardBody>
             <CForm
               className="row g-3 needs-validation"
@@ -223,12 +234,14 @@ const ClienteForm = () => {
 
               <CCol xs={12} className="d-flex justify-content-end gap-2 mt-4">
                 <CButton color="secondary" variant="outline" onClick={() => navigate('/clientes/listar')}>
+
                   <CIcon icon={cilArrowLeft} className="me-2" />
                   Cancelar
                 </CButton>
                 <CButton color="primary" type="submit">
                   <CIcon icon={cilSave} className="me-2" />
                   {isEdit ? 'Salvar Alterações' : 'Salvar Cliente'}
+
                 </CButton>
               </CCol>
             </CForm>
@@ -245,10 +258,12 @@ const ClienteForm = () => {
         }}
       >
         <CModalHeader className="bg-success text-white">
+
           <CModalTitle className="d-flex align-items-center">
             <CIcon icon={cilCheckCircle} className="me-2" size="xl" />
             Sucesso!
           </CModalTitle>
+
         </CModalHeader>
         <CModalBody>
           O cliente <strong>{formData.nome}</strong> foi {isEdit ? 'atualizado' : 'cadastrado'} com sucesso no sistema.
@@ -270,6 +285,7 @@ const ClienteForm = () => {
             <CIcon icon={cilXCircle} className="me-2" size="xl" />
             Erro ao Salvar
           </CModalTitle>
+
         </CModalHeader>
         <CModalBody>
           {errorMessage}
