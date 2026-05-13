@@ -91,6 +91,7 @@ const routes = [
   // Clientes
   { path: '/clientes/listar', name: 'Listar Clientes', element: React.lazy(() => import('./views/clientes/Listar')) },
   { path: '/clientes/novo', name: 'Novo Cliente', element: React.lazy(() => import('./views/clientes/Form')) },
+  { path: '/clientes/editar/:id', name: 'Editar Cliente', element: React.lazy(() => import('./views/clientes/Form')) },
 
   // Agendamentos
   { path: '/agendamentos/listar', name: 'Listar Agendamentos', element: React.lazy(() => import('./views/agendamentos/Listar')) },

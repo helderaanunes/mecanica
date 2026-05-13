@@ -1,16 +1,20 @@
-import React, { useState, useEffect } from 'react'
-import { useParams, useNavigate } from 'react-router-dom'
+import React, { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import {
-  CButton,
   CCard,
   CCardBody,
   CCardHeader,
   CCol,
-  CForm,
-  CFormInput,
-  CFormLabel,
   CRow,
+  CTable,
+  CTableBody,
+  CTableDataCell,
+  CTableHead,
+  CTableHeaderCell,
+  CTableRow,
+  CButton,
+  CSpinner,
   CModal,
   CModalHeader,
   CModalTitle,
@@ -18,68 +22,44 @@ import {
   CModalFooter,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
-import { cilCheckCircle, cilXCircle, cilSave, cilArrowLeft } from '@coreui/icons'
+import { cilPencil, cilTrash, cilPlus, cilWarning, cilBan } from '@coreui/icons'
 
-const ClienteForm = () => {
-  const { id } = useParams()
+const ListarClientes = () => {
   const navigate = useNavigate()
-  const isEdit = !!id
+  const [clientes, setClientes] = useState([])
+  const [loading, setLoading] = useState(true)
+  
+  const [modalExcluir, setModalExcluir] = useState(false)
+  const [clienteParaExcluir, setClienteParaExcluir] = useState(null)
 
-  const [cliente, setCliente] = useState({
-    nome: '',
-    celular: '',
-    email: '',
-    logradouro: '',
-    numero: '',
-    complemento: '',
-    bairro: '',
-    cidade: '',
-    uf: '',
-    cep: '',
-    cpfCnpj: ''
-  })
-
-  const [validated, setValidated] = useState(false)
-  const [modalSuccess, setModalSuccess] = useState(false)
-  const [modalError, setModalError] = useState(false)
-  const [errorMessage, setErrorMessage] = useState('')
-
-  useEffect(() => {
-    if (isEdit) {
-      axios.get(`http://localhost:8080/api/clientes/${id}`)
-        .then(response => setCliente(response.data))
-        .catch(() => {
-          setErrorMessage('Erro ao carregar cliente.')
-          setModalError(true)
-        })
+  const carregarClientes = async () => {
+    try {
+      setLoading(true)
+      const response = await axios.get('http://localhost:8080/api/clientes')
+      setClientes(response.data)
+    } catch (error) {
+      console.error('Erro ao buscar clientes:', error)
+    } finally {
+      setLoading(false)
     }
-  }, [id, isEdit])
-
-  const handleChange = (e) => {
-    setCliente({ ...cliente, [e.target.name]: e.target.value })
   }
 
-  const handleSubmit = async (event) => {
-    const form = event.currentTarget
-    event.preventDefault()
+  useEffect(() => {
+    carregarClientes()
+  }, [])
 
-    if (form.checkValidity() === false) {
-      event.stopPropagation()
-      setValidated(true)
-      return
-    }
+  const confirmarExclusao = (cliente) => {
+    setClienteParaExcluir(cliente)
+    setModalExcluir(true)
+  }
 
+  const executarExclusao = async () => {
     try {
-      if (isEdit) {
-        await axios.put(`http://localhost:8080/api/clientes/${id}`, cliente)
-      } else {
-        await axios.post(`http://localhost:8080/api/clientes`, cliente)
-      }
-
-      setModalSuccess(true)
+      await axios.delete(`http://localhost:8080/api/clientes/${clienteParaExcluir.id}`)
+      setModalExcluir(false)
+      carregarClientes()
     } catch (error) {
-      setErrorMessage('Erro ao salvar cliente.')
-      setModalError(true)
+      alert('Erro ao excluir cliente. Verifique se ele está vinculado a algum agendamento ou ordem de serviço.')
     }
   }
 
@@ -87,105 +67,106 @@ const ClienteForm = () => {
     <CRow>
       <CCol xs={12}>
         <CCard className="mb-4 shadow-sm">
-          <CCardHeader className="bg-dark text-white">
-            <strong>{isEdit ? 'Editar Cliente' : 'Cadastrar Cliente'}</strong>
+          <CCardHeader className="bg-dark text-white d-flex justify-content-between align-items-center">
+            <strong>Lista de Clientes</strong>
+            <CButton 
+                color="secondary"
+                className="text-white shadow-sm d-flex align-items-center" 
+                onClick={() => navigate('/clientes/novo')}
+                >
+                <CIcon icon={cilPlus} className="me-2" size="lg" />
+                Novo Cliente
+            </CButton>
           </CCardHeader>
-
           <CCardBody>
-            <CForm noValidate validated={validated} onSubmit={handleSubmit}>
-
-              <CRow>
-                <CCol md={6}>
-                  <CFormLabel>Nome</CFormLabel>
-                  <CFormInput name="nome" value={cliente.nome} onChange={handleChange} required />
-                </CCol>
-
-                <CCol md={6}>
-                  <CFormLabel>CPF/CNPJ</CFormLabel>
-                  <CFormInput name="cpfCnpj" value={cliente.cpfCnpj} onChange={handleChange} />
-                </CCol>
-
-                <CCol md={6}>
-                  <CFormLabel>Email</CFormLabel>
-                  <CFormInput name="email" value={cliente.email} onChange={handleChange} />
-                </CCol>
-
-                <CCol md={6}>
-                  <CFormLabel>Celular</CFormLabel>
-                  <CFormInput name="celular" value={cliente.celular} onChange={handleChange} />
-                </CCol>
-
-                <CCol md={8}>
-                  <CFormLabel>Logradouro</CFormLabel>
-                  <CFormInput name="logradouro" value={cliente.logradouro} onChange={handleChange} />
-                </CCol>
-
-                <CCol md={4}>
-                  <CFormLabel>Número</CFormLabel>
-                  <CFormInput name="numero" value={cliente.numero} onChange={handleChange} />
-                </CCol>
-
-                <CCol md={6}>
-                  <CFormLabel>Complemento</CFormLabel>
-                  <CFormInput name="complemento" value={cliente.complemento} onChange={handleChange} />
-                </CCol>
-
-                <CCol md={6}>
-                  <CFormLabel>Bairro</CFormLabel>
-                  <CFormInput name="bairro" value={cliente.bairro} onChange={handleChange} />
-                </CCol>
-
-                <CCol md={6}>
-                  <CFormLabel>Cidade</CFormLabel>
-                  <CFormInput name="cidade" value={cliente.cidade} onChange={handleChange} />
-                </CCol>
-
-                <CCol md={2}>
-                  <CFormLabel>UF</CFormLabel>
-                  <CFormInput name="uf" value={cliente.uf} onChange={handleChange} />
-                </CCol>
-
-                <CCol md={4}>
-                  <CFormLabel>CEP</CFormLabel>
-                  <CFormInput name="cep" value={cliente.cep} onChange={handleChange} />
-                </CCol>
-              </CRow>
-
-              <CCol xs={12} className="d-flex justify-content-end gap-2 mt-4">
-                <CButton color="secondary" onClick={() => navigate('/clientes/listar')}>
-                  <CIcon icon={cilArrowLeft} className="me-2" />
-                  Cancelar
-                </CButton>
-
-                <CButton color="primary" type="submit">
-                  <CIcon icon={cilSave} className="me-2" />
-                  Salvar
-                </CButton>
-              </CCol>
-
-            </CForm>
+            {loading ? (
+              <div className="text-center p-5">
+                <CSpinner color="primary" />
+              </div>
+            ) : (
+              <CTable align="middle" className="mb-0 border" hover responsive>
+                <CTableHead color="light">
+                  <CTableRow>
+                    <CTableHeaderCell className="text-center" style={{ width: '10%' }}>ID</CTableHeaderCell>
+                    <CTableHeaderCell>Nome</CTableHeaderCell>
+                    <CTableHeaderCell>CPF/CNPJ</CTableHeaderCell>
+                    <CTableHeaderCell>Celular</CTableHeaderCell>
+                    <CTableHeaderCell>Cidade/UF</CTableHeaderCell>
+                    <CTableHeaderCell className="text-center" style={{ width: '20%' }}>Ações</CTableHeaderCell>
+                  </CTableRow>
+                </CTableHead>
+                <CTableBody>
+                  {clientes.map((cliente) => (
+                    <CTableRow key={cliente.id}>
+                      <CTableDataCell className="text-center">
+                        {cliente.id}
+                      </CTableDataCell>
+                      <CTableDataCell>
+                        {cliente.nome}
+                      </CTableDataCell>
+                      <CTableDataCell>
+                        {cliente.cpfCnpj}
+                      </CTableDataCell>
+                      <CTableDataCell>
+                        {cliente.celular}
+                      </CTableDataCell>
+                      <CTableDataCell>
+                        {cliente.cidade} / {cliente.uf}
+                      </CTableDataCell>
+                      <CTableDataCell className="text-center">
+                        <CButton 
+                          color="info" 
+                          variant="outline" 
+                          size="sm" 
+                          className="me-2"
+                          onClick={() => navigate(`/clientes/editar/${cliente.id}`)}
+                        >
+                          <CIcon icon={cilPencil} />
+                        </CButton>
+                        
+                        <CButton 
+                          color="danger" 
+                          variant="outline" 
+                          size="sm"
+                          onClick={() => confirmarExclusao(cliente)}
+                        >
+                          <CIcon icon={cilTrash} />
+                        </CButton>
+                      </CTableDataCell>
+                    </CTableRow>
+                  ))}
+                  {clientes.length === 0 && (
+                    <CTableRow>
+                      <CTableDataCell colSpan="6" className="text-center text-muted py-4">
+                        Nenhum cliente cadastrado.
+                      </CTableDataCell>
+                    </CTableRow>
+                  )}
+                </CTableBody>
+              </CTable>
+            )}
           </CCardBody>
         </CCard>
       </CCol>
 
-      {/* SUCESSO */}
-      <CModal visible={modalSuccess} onClose={() => navigate('/clientes/listar')}>
-        <CModalHeader className="bg-success text-white">
-          <CModalTitle><CIcon icon={cilCheckCircle} className="me-2"/>Sucesso</CModalTitle>
+      <CModal visible={modalExcluir} onClose={() => setModalExcluir(false)} alignment="center">
+        <CModalHeader className="bg-warning">
+          <CModalTitle className="d-flex align-items-center">
+            <CIcon icon={cilWarning} className="me-2" /> Atenção
+          </CModalTitle>
         </CModalHeader>
-        <CModalBody>Cliente salvo com sucesso!</CModalBody>
+        <CModalBody>
+          Tem certeza que deseja excluir o cliente <strong>{clienteParaExcluir?.nome}</strong>?
+          <br />
+          <small className="text-danger">Essa ação não poderá ser desfeita.</small>
+        </CModalBody>
+        <CModalFooter>
+          <CButton color="secondary" onClick={() => setModalExcluir(false)}><CIcon icon={cilBan}  className="me-2" />Cancelar</CButton>
+          <CButton color="danger" className="text-white" onClick={executarExclusao}><CIcon icon={cilTrash} className="me-2" />Excluir permanentemente</CButton>
+        </CModalFooter>
       </CModal>
-
-      {/* ERRO */}
-      <CModal visible={modalError} onClose={() => setModalError(false)}>
-        <CModalHeader className="bg-danger text-white">
-          <CModalTitle><CIcon icon={cilXCircle} className="me-2"/>Erro</CModalTitle>
-        </CModalHeader>
-        <CModalBody>{errorMessage}</CModalBody>
-      </CModal>
-
     </CRow>
   )
 }
 
-export default ClienteForm
+export default ListarClientes
