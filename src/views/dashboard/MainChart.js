@@ -1,51 +1,99 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useState } from 'react'
 import { CChartLine } from '@coreui/react-chartjs'
 import { getStyle } from '@coreui/utils'
+import axios from 'axios'
 
-const MainChart = () => {
-  const chartRef = useRef(null)
+const MainChart = ({ setPeriodo }) => {
+  const [dadosFluxo, setDadosFluxo] = useState([])
 
-  // Cores dinâmicas do CoreUI
-  const colorIn = getStyle('--cui-success') || '#2eb85c'
-  const colorOut = getStyle('--cui-danger') || '#e55353'
-
-  const data = {
-    labels: ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado', 'Domingo'],
-    datasets: [
-      {
-        label: 'Entradas',
-        backgroundColor: 'transparent',
-        borderColor: colorIn,
-        pointHoverBackgroundColor: colorIn,
-        borderWidth: 3,
-        data: [1200, 1900, 800, 1500, 2100, 1100, 600],
-        tension: 0.4,
-      },
-      {
-        label: 'Saídas',
-        backgroundColor: 'transparent',
-        borderColor: colorOut,
-        pointHoverBackgroundColor: colorOut,
-        borderWidth: 3,
-        borderDash: [5, 5], // Linha tracejada para diferenciar
-        data: [800, 1200, 900, 700, 1500, 400, 300],
-        tension: 0.4,
-      },
-    ],
+  // Função auxiliar para formatar YYYY-MM-DD para DD/MM/AAAA
+  const formatarDataBR = (dataString) => {
+    if (!dataString) return ''
+    const [ano, mes, dia] = dataString.split('-')
+    return `${dia}/${mes}/${ano}`
   }
+
+  useEffect(() => {
+    const buscarDados = async () => {
+      try {
+        const response = await axios.get('http://localhost:8080/api/lancamentos/fluxo-semanal')
+        const dados = response.data
+        setDadosFluxo(dados)
+
+        // Atualiza o texto do intervalo no Dashboard pai
+        if (dados.length > 0 && setPeriodo) {
+          const inicio = formatarDataBR(dados[0].data)
+          const fim = formatarDataBR(dados[dados.length - 1].data)
+          setPeriodo(`${inicio} - ${fim}`)
+        }
+      } catch (error) {
+        console.error('Erro ao carregar dados do gráfico:', error)
+        if (setPeriodo) setPeriodo('Erro ao carregar período')
+      }
+    }
+
+    buscarDados()
+  }, [setPeriodo])
 
   return (
     <CChartLine
-      ref={chartRef}
       style={{ height: '300px', marginTop: '40px' }}
-      data={data}
+      data={{
+        // Labels formatados para BR no eixo X
+        labels: dadosFluxo.map((d) => formatarDataBR(d.data)),
+        datasets: [
+          {
+            label: 'Entradas',
+            backgroundColor: 'transparent',
+            borderColor: getStyle('--cui-success'),
+            pointHoverBackgroundColor: getStyle('--cui-success'),
+            borderWidth: 2,
+            data: dadosFluxo.map((d) => d.totalEntrada),
+            fill: true,
+          },
+          {
+            label: 'Saídas',
+            backgroundColor: 'transparent',
+            borderColor: getStyle('--cui-danger'),
+            pointHoverBackgroundColor: getStyle('--cui-danger'),
+            borderWidth: 2,
+            data: dadosFluxo.map((d) => d.totalSaida),
+          },
+        ],
+      }}
       options={{
         maintainAspectRatio: false,
-        plugins: { legend: { display: true } },
+        plugins: {
+          legend: {
+            display: false,
+          },
+        },
         scales: {
-          x: { grid: { display: false } },
-          y: { beginAtZero: true }
-        }
+          x: {
+            grid: {
+              drawOnChartArea: false,
+            },
+          },
+          y: {
+            beginAtZero: true,
+            ticks: {
+              // Formata os valores do eixo Y para moeda (opcional)
+              callback: function (value) {
+                return 'R$ ' + value.toLocaleString('pt-BR')
+              },
+            },
+          },
+        },
+        elements: {
+          line: {
+            tension: 0.4,
+          },
+          point: {
+            radius: 2,
+            hitRadius: 10,
+            hoverRadius: 4,
+          },
+        },
       }}
     />
   )

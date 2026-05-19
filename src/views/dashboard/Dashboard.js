@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   CCard, CCardBody, CCardHeader, CCol, CRow,
   CTable, CTableBody, CTableDataCell, CTableHead, CTableHeaderCell, CTableRow,
@@ -8,7 +8,7 @@ import { CChartBar, CChartDoughnut } from '@coreui/react-chartjs'
 import MainChart from './MainChart'
 
 const Dashboard = () => {
-
+const [periodoTexto, setPeriodoTexto] = useState('Carregando período...')
   // ==========================================
   // CONFIGURAÇÕES VISUAIS COMPARTILHADAS (UI)
   // ==========================================
@@ -140,9 +140,10 @@ const Dashboard = () => {
         <CCardHeader className="border-0" style={cardHeaderStyle}>
           Fluxo de Caixa Semanal
           <div className="text-muted" style={{ fontSize: '0.78rem', fontWeight: 'normal' }}>Comparativo de Entradas vs Saídas</div>
+          <div className="small text-body-secondary">{periodoTexto}</div>
         </CCardHeader>
         <CCardBody>
-          <MainChart />
+          <MainChart setPeriodo={setPeriodoTexto} />
         </CCardBody>
       </CCard>
 
